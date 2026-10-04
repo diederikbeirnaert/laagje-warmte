@@ -54,7 +54,7 @@ function render() {
       <div class="hero-text">
         <p class="eyebrow">3D-prints voor De Warmste Week</p>
         <h1>Van foto tot beeldje, <em>laagje per laagje.</em></h1>
-        <p class="lead">Laad een foto op van je huisdier, je lievelingsknuffel of iets anders waar je van houdt.
+        <p class="lead">Laad een foto op van je huisdier, je lievelingsknuffeltje of iets anders waar je van houdt.
           Wij maken er een 3D-model van en printen het voor jou. De opbrengst gaat naar De Warmste Week.</p>
         <div class="hero-cta">
           <a class="btn big" href="#bestel">Bestel je print</a>
