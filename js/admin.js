@@ -1,6 +1,6 @@
 // Adminpaneel: startscherm met grote app-knoppen, bestellingen, formaten, export en instellingen.
 import {
-  $, $$, esc, uid, money, fmtDate, fmtRef, fmtIban, toast, BRAND, ICON, logoMark, getConfig, sizeList, DEFAULT_SIZES,
+  $, $$, esc, uid, money, fmtDate, fmtRef, fmtIban, toast, BRAND, ICON, logoMark, getConfig, sizeList, DEFAULT_SIZES, colorName, colorHex,
 } from './common.js';
 import {
   configured, currentAdmin, login, logout, watchOrders, updateOrder, deleteOrder, getImage, saveSizes, saveShop,
@@ -217,7 +217,7 @@ function paintOrders() {
         <img class="thumb" src="${esc(o.thumb || '')}" alt="" loading="lazy">
         <span class="o-who"><strong>${esc(o.name)}</strong><small>${esc(o.zip || '')} ${esc(o.city || '')}</small></span>
         <span class="o-ref"><span class="mono">${fmtRef(o.ref)}</span><small>${fmtDate(o.createdAt)}</small></span>
-        <span class="o-size">${esc(o.sizeName)}${o.status && o.status !== 'nieuw' ? `<small>${statusLabel(o.status)}</small>` : ''}</span>
+        <span class="o-size"><span>${esc(o.sizeName)}${o.color ? ` <i class="dot" style="--c:${colorHex(o.color)}" title="${colorName(o.color)}"></i>${colorName(o.color)}` : ''}</span>${o.status && o.status !== 'nieuw' ? `<small>${statusLabel(o.status)}</small>` : ''}</span>
         <span class="o-price">${money(o.price)}</span>
       </a>
       <label class="switch" title="Betaald aan- of uitzetten">
@@ -289,6 +289,7 @@ function renderDetail(id) {
         <dl class="info">
           ${row('Besteld op', fmtDate(o.createdAt))}
           ${row('Formaat', `${esc(o.sizeName)}${o.sizeNote ? ` <small>(${esc(o.sizeNote)})</small>` : ''}`)}
+          ${row('Kleur', o.color ? `<i class="dot" style="--c:${colorHex(o.color)}"></i> ${colorName(o.color)}` : '')}
           ${row('E-mail', `<a href="mailto:${esc(o.email)}">${esc(o.email)}</a>`)}
           ${row('Telefoon', esc(o.phone))}
           ${row('Adres', `${esc(o.street)}${o.box ? ` bus ${esc(o.box)}` : ''}<br>${esc(o.zip)} ${esc(o.city)}${o.country ? `<br>${esc(o.country)}` : ''}`)}

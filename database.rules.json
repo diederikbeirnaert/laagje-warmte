@@ -29,6 +29,7 @@
         "sizeId": { ".validate": "newData.isString() && newData.val().length <= 40" },
         "sizeName": { ".validate": "newData.isString() && newData.val().length <= 60" },
         "sizeNote": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "color": { ".validate": "newData.isString() && newData.val().matches(/^(rood|oranje|geel|groen|blauw|paars|wit|zwart)$/)" },
         "price": { ".validate": "newData.isNumber() && (newData.val() === data.val() || newData.val() === root.child('config').child('sizes').child(newData.parent().child('sizeId').val()).child('price').val())" },
         "paid": { ".validate": "newData.isBoolean() && (newData.val() === false || (auth != null && root.child('admins').child(auth.uid).val() === true))" },
         "paidAt": { ".validate": "newData.isNumber() && auth != null && root.child('admins').child(auth.uid).val() === true" },

@@ -1,6 +1,6 @@
 // De publieke pagina: uitleg, bestelformulier en betaalgegevens na het bestellen.
 import {
-  $, $$, esc, money, toast, BRAND, ICON, getConfig, newRef, fmtRef, fmtIban, logoMark, printArt, blockArt,
+  $, $$, esc, money, toast, BRAND, ICON, getConfig, newRef, fmtRef, fmtIban, logoMark, printArt, blockArt, COLORS, colorName,
 } from './common.js';
 import { configured, createOrder } from './store.js';
 import { prepareImage } from './image.js';
@@ -132,7 +132,19 @@ function formHtml() {
       </fieldset>
 
       <fieldset class="block">
-        <legend><span class="num">02</span> Laad je afbeelding op</legend>
+        <legend><span class="num">02</span> Kies je kleur</legend>
+        <div class="colors" role="radiogroup" aria-label="Kleur">
+          ${COLORS.map((c) => `
+            <label class="color">
+              <input type="radio" name="color" value="${c.id}">
+              <span class="color-card"><span class="swatch" style="--c:${c.hex}"></span>${c.name}</span>
+            </label>`).join('')}
+        </div>
+        <p class="err" id="e-color" hidden></p>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend><span class="num">03</span> Laad je afbeelding op</legend>
         <div class="drop" id="drop">
           <input type="file" id="file" accept="image/jpeg,image/png" class="sr-only">
           <div class="drop-empty" id="drop-empty">
@@ -147,7 +159,7 @@ function formHtml() {
       </fieldset>
 
       <fieldset class="block">
-        <legend><span class="num">03</span> Waar mag het naartoe?</legend>
+        <legend><span class="num">04</span> Waar mag het naartoe?</legend>
         <div class="fields">
           ${FIELDS.map(fieldHtml).join('')}
           <div class="field wide">
@@ -168,6 +180,7 @@ function formHtml() {
       <h3>Jouw bestelling</h3>
       <dl>
         <div><dt>Formaat</dt><dd id="s-size"></dd></div>
+        <div><dt>Kleur</dt><dd id="s-color">nog niet gekozen</dd></div>
         <div><dt>Afbeelding</dt><dd id="s-img">nog niet gekozen</dd></div>
       </dl>
       <p class="total"><span>Totaal</span><strong id="s-total"></strong></p>
@@ -177,6 +190,7 @@ function formHtml() {
   </form>`;
 }
 
+const chosenColor = () => $('input[name=color]:checked')?.value;
 const chosenSize = () => cfg.sizes.find((s) => s.id === $('input[name=size]:checked')?.value);
 
 function showErr(id, msg) {
@@ -195,6 +209,10 @@ function wireForm() {
     $('#s-total').textContent = s ? money(s.price) : '';
   };
   $$('input[name=size]').forEach((r) => r.addEventListener('change', updateSummary));
+  $$('input[name=color]').forEach((r) => r.addEventListener('change', () => {
+    $('#s-color').textContent = colorName(chosenColor());
+    showErr('color', '');
+  }));
   updateSummary();
 
   // Afbeelding kiezen of slepen
@@ -236,6 +254,7 @@ function wireForm() {
     let firstBad = null;
     const bad = (id, msg, el = $(`#f-${id}`)) => { showErr(id, msg); firstBad ||= el; };
 
+    if (!chosenColor()) bad('color', 'Kies een kleur.', $('input[name=color]'));
     if (!picked) bad('file', 'Kies eerst een afbeelding.', drop);
     FIELDS.forEach((f) => {
       const v = (data[f.id] || '').trim();
@@ -255,6 +274,7 @@ function wireForm() {
       sizeId: size.id,
       sizeName: size.name,
       price: Number(size.price),
+      color: chosenColor(),
       paid: false,
       status: 'nieuw',
       thumb: picked.thumb,
@@ -310,7 +330,7 @@ function confirmationHtml(o) {
         <div class="pay-row"><span>Rekeningnummer</span><strong>nog niet ingesteld</strong></div>`}
         <div class="pay-row"><span>Mededeling</span><strong class="mono">${fmtRef(o.ref)}</strong>
           <button class="copy" data-copy="${fmtRef(o.ref)}" aria-label="Mededeling kopiëren">${ICON.copy}</button></div>
-        <div class="pay-row"><span>Je bestelling</span><strong>${esc(o.sizeName)}${o.sizeNote ? `, ${esc(o.sizeNote)}` : ''}</strong></div>
+        <div class="pay-row"><span>Je bestelling</span><strong>${esc(o.sizeName)}${o.sizeNote ? `, ${esc(o.sizeNote)}` : ''}${o.color ? `, ${colorName(o.color).toLowerCase()}` : ''}</strong></div>
       </div>
       ${ready ? `<div class="pay-qr"><div id="qr"></div><p>Scan met je bank-app</p></div>` : ''}
     </div>

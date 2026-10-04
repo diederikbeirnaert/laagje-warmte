@@ -222,6 +222,25 @@ input[aria-invalid=true] { border-color: var(--ember); box-shadow: 0 0 0 3px rgb
 .size-note { font-size: .88rem; color: var(--ink-2); }
 .size-price { font: 600 1rem var(--mono); margin-top: .5rem; }
 
+.colors { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: .7rem; }
+.color { position: relative; cursor: pointer; }
+.color input { position: absolute; opacity: 0; inset: 0; }
+.color-card {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .6rem .8rem; font-weight: 600;
+  background: var(--cream); border: var(--line); border-radius: 10px;
+  transition: transform .14s, box-shadow .14s, background .14s;
+}
+.color:hover .color-card { transform: translateY(-2px); box-shadow: 0 3px 0 0 var(--ink); }
+.color input:checked + .color-card { background: #FFF1CF; transform: translateY(-3px); box-shadow: 0 4px 0 0 var(--ink); }
+.color input:focus-visible + .color-card { outline: 2.5px solid var(--ink); outline-offset: 3px; }
+.swatch { width: 26px; height: 26px; flex: none; border-radius: 50%; border: var(--line); background: var(--c);
+  /* laaglijntjes, zoals een geprint oppervlak */
+  background-image: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(0, 0, 0, .12) 3px 4px); }
+.color input:checked + .color-card .swatch { box-shadow: 0 0 0 2px #FFF1CF, 0 0 0 3.5px var(--ink); }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--c); vertical-align: -1px; margin: 0 .25rem 0 .35rem; }
+.info .dot { margin-left: 0; }
+
 .drop { border: 2px dashed var(--ink); border-radius: 14px; background: var(--cream); transition: background .15s; }
 .drop.over { background: #FFF1CF; border-style: solid; }
 .drop.busy { opacity: .6; pointer-events: none; }

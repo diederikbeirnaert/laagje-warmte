@@ -1,6 +1,6 @@
 // Bestanden die de admin downloadt: bestelbon (pdf), verzendlabel (pdf), zip per bestelling, export.
 // Alles wordt in de browser gemaakt met jsPDF en JSZip (zie vendor/).
-import { BRAND, slug, fmtDate, fmtRef, download } from './common.js';
+import { BRAND, slug, fmtDate, fmtRef, download, colorName } from './common.js';
 
 const STATUS = { nieuw: 'Nieuw', geprint: 'Geprint', verzonden: 'Verzonden' };
 export const statusLabel = (s) => STATUS[s] || STATUS.nieuw;
@@ -56,6 +56,7 @@ export function orderPdf(order, image) {
   ], M, y);
   const right = block('Bestelling', [
     [`${order.sizeName}${order.sizeNote ? ` (${order.sizeNote})` : ''}`, true],
+    order.color && [`Kleur: ${colorName(order.color)}`, true],
     [`Prijs: ${pdfMoney(order.price)}`],
     [order.paid ? `Betaald${order.paidAt ? ` op ${fmtDate(order.paidAt, false)}` : ''}` : 'Nog niet betaald', true],
     [`Status: ${statusLabel(order.status)}`],
@@ -118,7 +119,7 @@ export function labelPdf(order, shop) {
   doc.setFont('courier', 'bold').setFontSize(10);
   doc.text(fmtRef(order.ref), M, 139);
   doc.setFont('helvetica', 'normal').setFontSize(9).setTextColor(90);
-  doc.text(`${BRAND} · ${order.sizeName || ''}`, M, 144);
+  doc.text(`${BRAND} · ${order.sizeName || ''}${order.color ? ` · ${colorName(order.color)}` : ''}`, M, 144);
   return doc;
 }
 
@@ -152,6 +153,7 @@ const COLUMNS = [
   ['Gemeente', (o) => o.city, 20],
   ['Land', (o) => o.country, 12],
   ['Formaat', (o) => o.sizeName, 14],
+  ['Kleur', (o) => colorName(o.color), 10],
   ['Prijs', (o) => Number(o.price) || 0, 8],
   ['Betaald', (o) => (o.paid ? 'ja' : 'nee'), 9],
   ['Betaald op', (o) => fmtDate(o.paidAt, false), 12],

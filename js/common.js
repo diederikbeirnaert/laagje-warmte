@@ -54,6 +54,20 @@ export const DEFAULT_SHOP = {
   senderCity: '',
 };
 
+// Filamentkleuren waaruit de klant kiest. 'hex' is enkel voor het staaltje op het scherm.
+export const COLORS = [
+  { id: 'rood', name: 'Rood', hex: '#D22B2B' },
+  { id: 'oranje', name: 'Oranje', hex: '#F47A1F' },
+  { id: 'geel', name: 'Geel', hex: '#F7C917' },
+  { id: 'groen', name: 'Groen', hex: '#2E9447' },
+  { id: 'blauw', name: 'Blauw', hex: '#2563C9' },
+  { id: 'paars', name: 'Paars', hex: '#7B3FA6' },
+  { id: 'wit', name: 'Wit', hex: '#FFFFFF' },
+  { id: 'zwart', name: 'Zwart', hex: '#1C1C1C' },
+];
+export const colorName = (id) => COLORS.find((c) => c.id === id)?.name || '';
+export const colorHex = (id) => COLORS.find((c) => c.id === id)?.hex || 'transparent';
+
 export const sizeList = (sizes) =>
   Object.entries(sizes || {}).map(([id, s]) => ({ id, ...s })).sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
 

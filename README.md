@@ -52,7 +52,7 @@ Ga op GitHub naar **Settings → Pages → Source: Deploy from a branch → `mai
 
 **Voor de klant**
 
-1. Formaat kiezen, foto opladen (jpg of png) en adres invullen.
+1. Formaat en kleur kiezen, foto opladen (jpg of png) en adres invullen. De kleuren (rood, oranje, geel, groen, blauw, paars, wit, zwart) staan in `js/common.js` (`COLORS`); pas je die lijst aan, pas dan ook de regel `color` in `database.rules.json` aan.
 2. Na het versturen verschijnen het bedrag, het rekeningnummer, de gestructureerde mededeling (`+++123/4567/89012+++`) en een QR-code voor de bank-app.
 3. Er wordt geen e-mail verstuurd: de klant drukt de pagina af of bewaart ze als pdf.
 
