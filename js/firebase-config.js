@@ -3,11 +3,11 @@
 // alles wordt dan enkel in deze browser bewaard.
 // Deze waarden zijn niet geheim: de beveiliging zit in database.rules.json.
 export const firebaseConfig = {
-  apiKey: 'VUL_IN',
-  authDomain: 'VUL_IN.firebaseapp.com',
-  databaseURL: 'https://VUL_IN-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: 'VUL_IN',
-  storageBucket: 'VUL_IN.firebasestorage.app',
-  messagingSenderId: 'VUL_IN',
-  appId: 'VUL_IN',
+  apiKey: 'AIzaSyAnaLqbdc6qO7RQvq-MmHPPOqCOFWwbNY0',
+  authDomain: 'laagje-warmte.firebaseapp.com',
+  databaseURL: 'https://laagje-warmte-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'laagje-warmte',
+  storageBucket: 'laagje-warmte.firebasestorage.app',
+  messagingSenderId: '29259779568',
+  appId: '1:29259779568:web:8f691269a5d201fbbca135',
 };
