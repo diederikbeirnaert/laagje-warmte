@@ -1,0 +1,9 @@
+{
+  "name": "laagje-warmte",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bestelsite voor 3D-prints van foto's, voor De Warmste Week",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

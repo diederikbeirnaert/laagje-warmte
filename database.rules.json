@@ -1,0 +1,52 @@
+{
+  "rules": {
+    "admins": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid"
+      }
+    },
+    "config": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    },
+    "orders": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$id": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['ref', 'createdAt', 'name', 'email', 'street', 'zip', 'city', 'sizeId', 'sizeName', 'price', 'paid'])",
+        "ref": { ".validate": "newData.isString() && newData.val().matches(/^[0-9]{12}$/)" },
+        "createdAt": { ".validate": "newData.isNumber() && (newData.val() === now || newData.val() === data.val())" },
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100" },
+        "email": { ".validate": "newData.isString() && newData.val().length <= 150 && newData.val().matches(/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/)" },
+        "phone": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "street": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 150" },
+        "box": { ".validate": "newData.isString() && newData.val().length <= 20" },
+        "zip": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 12" },
+        "city": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100" },
+        "country": { ".validate": "newData.isString() && newData.val().length <= 60" },
+        "note": { ".validate": "newData.isString() && newData.val().length <= 1000" },
+        "sizeId": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "sizeName": { ".validate": "newData.isString() && newData.val().length <= 60" },
+        "sizeNote": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "price": { ".validate": "newData.isNumber() && (newData.val() === data.val() || newData.val() === root.child('config').child('sizes').child(newData.parent().child('sizeId').val()).child('price').val())" },
+        "paid": { ".validate": "newData.isBoolean() && (newData.val() === false || (auth != null && root.child('admins').child(auth.uid).val() === true))" },
+        "paidAt": { ".validate": "newData.isNumber() && auth != null && root.child('admins').child(auth.uid).val() === true" },
+        "status": { ".validate": "newData.isString() && newData.val().matches(/^(nieuw|geprint|verzonden)$/)" },
+        "thumb": { ".validate": "newData.isString() && newData.val().length <= 20000 && newData.val().beginsWith('data:image/jpeg;base64,')" },
+        "imgType": { ".validate": "newData.isString() && newData.val().matches(/^image\\/(jpeg|png)$/)" },
+        "imgW": { ".validate": "newData.isNumber()" },
+        "imgH": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "images": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$id": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.isString() && newData.val().length <= 1400000 && (newData.val().beginsWith('data:image/jpeg;base64,') || newData.val().beginsWith('data:image/png;base64,'))"
+      }
+    }
+  }
+}
